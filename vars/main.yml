@@ -1,0 +1,8 @@
+---
+# vars file for jackl0phty.steamcmd
+
+# Set download URL.
+steamcmd_download_url: 'https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz'
+
+# Set steamcmd user.
+steamcmd_user: 'anonymous'

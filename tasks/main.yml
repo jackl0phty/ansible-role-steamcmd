@@ -8,12 +8,12 @@
     - name: Install packages for Debian based distros.
       apt: pkg={{item}} state=latest update_cache=yes
       with_items:
-      - lib32gcc1 
+      - lib32gcc1
       become: yes
       become_user: root
       when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
-    - name: Add user steam that steamcmd will run under.  
+    - name: Add user steam that steamcmd will run under.
       user: name=steam comment="Valve Steamcmd User" shell=/bin/bash createhome=yes
       become: yes
       become_user: root
@@ -28,7 +28,7 @@
 
     - name: Save path for steamcmd download.
       stat: path=/home/steam/steamcmd_linux
-      register: steam_dir 
+      register: steam_dir
 
     - name: Uncompress steamcmd download.
       unarchive: src=/home/steam/steamcmd_linux.tar.gz dest=/home/steam copy=no group=steam owner=steam

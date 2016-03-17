@@ -21,3 +21,6 @@ galaxy_info:
     - steamcmd
     - steam
     - valve
+    - dedicatedserver
+    - dedicatedservers
+    - srcds

@@ -4,5 +4,8 @@
 # Set download URL.
 steamcmd_download_url: 'https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz'
 
+# Set Game file directory.
+steamcmd_gamefile_dir: '/mnt/steamcmd'
+
 # Set steamcmd user.
 steamcmd_user: 'anonymous'

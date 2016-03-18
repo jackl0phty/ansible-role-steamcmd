@@ -33,5 +33,5 @@
   become: yes
   become_user: root
 
-- name: Create directory /mnt/steamcmd.
-  file: path=/mnt/steam state=directory mode=0755 group=steam owner=steam
+- name: Create game file directory ( Default /mnt/steamcmd ).
+  file: path={{ steamcmd_gamefile_dir }} state=directory mode=0755 group=steam owner=steam

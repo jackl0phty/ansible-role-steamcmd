@@ -1,0 +1,9 @@
+---
+
+- include_vars: "../vars/main.yml"
+
+- name: Create game file directory for Killing Floor.
+  file: path={{ steamcmd_gamefile_dir }}/killing_floor state=directory mode=0755 group=steam owner=steam
+
+- name: Create game script for Killing Floor.
+  template: src={{ steamcmd_gamefile_dir }}/killing_floor/killing_floor.txt dest=/ owner=steam group=steam mode=0644

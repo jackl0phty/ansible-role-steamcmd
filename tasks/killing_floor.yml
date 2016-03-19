@@ -6,4 +6,4 @@
   file: path={{ steamcmd_gamefile_dir }}/killing_floor state=directory mode=0755 group=steam owner=steam
 
 - name: Create game script for Killing Floor.
-  template: src="../game_scripts/killing_floor.j2" dest={{ steamcmd_gamefile_dir }}/killing_floor owner=steam group=steam mode=0644
+  template: src="../../game_scripts/killing_floor.j2" dest={{ steamcmd_gamefile_dir }}/killing_floor/killing_floor.txt owner=steam group=steam mode=0644

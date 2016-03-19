@@ -35,3 +35,6 @@
 
 - name: Create game file directory ( Default /mnt/steamcmd ).
   file: path={{ steamcmd_gamefile_dir }} state=directory mode=0755 group=steam owner=steam
+
+# Build Killing Floor server.
+- include: tasks/killing_floor.yml

@@ -1,40 +1,46 @@
 ---
 
-- include_vars: "../vars/main.yml"
+- hosts: all
 
-- name: Install packages for Debian based distros.
-  apt: pkg={{item}} state=latest update_cache=yes
-  with_items:
-  - lib32gcc1
-  become: yes
-  become_user: root
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  tasks:
 
-- name: Add user steam that steamcmd will run under.
-  user: name=steam comment="Valve Steamcmd User" shell=/bin/bash createhome=yes
-  become: yes
-  become_user: root
+    - include_vars: "../vars/main.yml"
 
-- name: Create directory for SteamCMD.
-  file: path=/home/steam state=directory mode=0755
+    - name: Install packages for Debian based distros.
+      apt: pkg={{item}} state=latest update_cache=yes
+      with_items:
+      - lib32gcc1
+      become: yes
+      become_user: root
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
-- name: Download steamcmd.
-  get_url: url={{ steamcmd_download_url }} dest=/home/steam/steamcmd_linux.tar.gz
-  become: yes
-  become_user: root
+    - name: Add user steam that steamcmd will run under.
+      user: name=steam comment="Valve Steamcmd User" shell=/bin/bash createhome=yes
+      become: yes
+      become_user: root
 
-- name: Save path for steamcmd download.
-  stat: path=/home/steam/steamcmd_linux
-  register: steam_dir
+    - name: Create directory for SteamCMD.
+      file: path=/home/steam state=directory mode=0755
 
-- name: Uncompress steamcmd download.
-  unarchive: src=/home/steam/steamcmd_linux.tar.gz dest=/home/steam copy=no group=steam owner=steam
-  when: steam_dir.stat.exists == False
-  become: yes
-  become_user: root
+    - name: Download steamcmd.
+      get_url: url={{ steamcmd_download_url }} dest=/home/steam/steamcmd_linux.tar.gz
+      become: yes
+      become_user: root
 
-- name: Create game file directory ( Default /mnt/steamcmd ).
-  file: path={{ steamcmd_gamefile_dir }} state=directory mode=0755 group=steam owner=steam
+    - name: Save path for steamcmd download.
+      stat: path=/home/steam/steamcmd_linux
+      register: steam_dir
 
-# Build Killing Floor server.
-- include: tasks/killing_floor.yml
+    - name: Uncompress steamcmd download.
+      unarchive: src=/home/steam/steamcmd_linux.tar.gz dest=/home/steam copy=no group=steam owner=steam
+      when: steam_dir.stat.exists == False
+      become: yes
+      become_user: root
+
+    - name: Create game file directory ( Default /mnt/steamcmd ).
+      file: path={{ steamcmd_gamefile_dir }} state=directory mode=0755 group=steam owner=steam
+      become: yes
+      become_user: root
+
+    # Build Killing Floor server.
+    - include: killing_floor.yml

@@ -4,6 +4,19 @@
 
 - name: Create game file directory for Killing Floor.
   file: path={{ steamcmd_gamefile_dir }}/killing_floor state=directory mode=0755 group=steam owner=steam
+  become: yes
+  become_user: root
 
 - name: Create game script for Killing Floor.
   template: src="../../game_scripts/killing_floor.j2" dest={{ steamcmd_gamefile_dir }}/killing_floor/killing_floor.txt owner=steam group=steam mode=0644
+
+- name: Create game script for Killing Floor.
+  template: src="../../game_scripts/killing_floor.j2" dest={{ steamcmd_gamefile_dir }}/killing_floor/killing_floor.txt owner=steam group=steam mode=0644
+  become: yes
+  become_user: root
+
+- name: Launch Killing floor.
+  shell: '/home/steam/steamcmd.sh +runscript {{ steamcmd_gamefile_dir }}/killing_floor/killing_floor.txt'
+#  when: bin.stat.exists == False
+  become: yes
+  become_user: steam

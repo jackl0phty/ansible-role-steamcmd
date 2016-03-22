@@ -12,8 +12,16 @@
   become: yes
   become_user: root
 
-- name: Launch Killing floor.
+- name: Get Docker binary.
+  stat: path=/usr/bin/docker
+  register: bin
+
+- name: Get Vagrant directory.
+  stat: path=/vagrant
+  register: vagrant 
+
+- name: Download Killing floor.
   shell: '/home/steam/steamcmd.sh +runscript {{ steamcmd_gamefile_dir }}/killing_floor/killing_floor.txt'
-#  when: bin.stat.exists == False
+  when: bin.stat.exists == 'True' or vagrant.stat.exists == 'True'
   become: yes
   become_user: steam

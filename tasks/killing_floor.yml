@@ -1,27 +1,37 @@
 ---
+- hosts: all
+  gather_facts: true
 
-- include_vars: "../vars/main.yml"
+  pre_tasks:
+  - name: 'install python2'
+    become: yes
+    become_user: root
+    raw: apt-get install -y python-simplejson
 
-- name: Create game file directory for Killing Floor.
-  file: path={{ steamcmd_gamefile_dir }}/killing_floor state=directory mode=0755 group=steam owner=steam
-  become: yes
-  become_user: root
+  tasks:  
+  - name: Include variables.
+    include_vars: '../vars/main.yml'
 
-- name: Create game script for Killing Floor.
-  template: src="../../game_scripts/killing_floor.j2" dest={{ steamcmd_gamefile_dir }}/killing_floor/killing_floor.txt owner=steam group=steam mode=0644
-  become: yes
-  become_user: root
+  - name: Create game file directory for Killing Floor.
+    file: path={{ steamcmd_gamefile_dir }}/killing_floor state=directory mode=0755 group=steam owner=steam
+    become: yes
+    become_user: root
 
-- name: Get Docker binary.
-  stat: path=/usr/bin/docker
-  register: bin
+  - name: Create game script for Killing Floor.
+    template: src="../game_scripts/killing_floor.j2" dest={{ steamcmd_gamefile_dir }}/killing_floor/killing_floor.txt owner=steam group=steam mode=0644
+    become: yes
+    become_user: root
 
-- name: Get Vagrant directory.
-  stat: path=/vagrant
-  register: vagrant 
+  - name: Get Docker binary.
+    stat: path=/usr/bin/docker
+    register: bin
 
-- name: Download Killing floor.
-  shell: '/home/steam/steamcmd.sh +runscript {{ steamcmd_gamefile_dir }}/killing_floor/killing_floor.txt'
-  when: bin.stat.exists == 'True' or vagrant.stat.exists == 'True'
-  become: yes
-  become_user: steam
+  - name: Get Vagrant directory.
+    stat: path=/vagrant
+    register: vagrant
+
+  - name: Download Killing floor.
+    shell: '/home/steam/steamcmd.sh +runscript {{ steamcmd_gamefile_dir }}/killing_floor/killing_floor.txt'
+    when: bin.stat.exists == 'True' or vagrant.stat.exists == 'True'
+    become: yes
+    become_user: steam
